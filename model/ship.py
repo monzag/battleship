@@ -27,7 +27,7 @@ class Ship:
         return ocean
 
     @staticmethod
-    def is_ship_in_ocean(ocean, row, column, size, is_vertical):
+    def is_in_ocean(row, column, size, is_vertical):
         '''
         Checks if user passed attributes values for new Ship obj. fit
         in range of Oceans board.
@@ -48,16 +48,18 @@ class Ship:
             True  : if new Ship obj. would fit in Ocean (index wise)
             False : otherwise
         '''
+        # indexes and size of first square are in range of oceans board
         if (0 <= row <= 9) and (0 <= column <= 9) and (1 <= size <= 5):
-            if is_vertical and column + size - 1 <= 9:
+            # would last squere be still in range of oceans board
+            if is_vertical and row + size - 1 <= 9:
                 return True
-            elif not is_vertical and row + size - 1 <= 9:
+            elif not is_vertical and column + size - 1 <= 9:
                 return True
         
         return False
 
     @staticmethod
-    def are_there_neighbours(ocean, row, column, size, is_vertical):
+    def can_be_set(ocean, row, column, size, is_vertical):
         '''
         Checks passed location of newly defined Ship obj. under fallowing
         curriculumstances:
@@ -82,51 +84,88 @@ class Ship:
             False : otherwise
         '''
         # disalow wrong indexes to be passed further in function
-        if not is_ship_in_ocean(row, column, size, is_vertical):
+        if Ship.is_in_ocean(row, column, size, is_vertical):
+            
+            if is_vertical:
+
+                # iterate through every single ocean.board.squere around new Ship
+                for y in Ship.range_of_lenght(row, size):
+                    for x in Ship.range_of_width(row):
+                        # return False if any squere is a part of existing ship
+                        if ocean.board[y][x].is_ship:
+                            return False
+
+            elif not is_vertical:
+
+                # iterate through every single ocean.board.squere around new Ship
+                for y in Ship.range_of_width(row):
+                    for x in Ship.range_of_lenght(column, size):
+                        # return False if any squere is a part of existing ship
+                        if ocean.board[y][x].is_ship:
+                            return False
+            
+            return True
+
+        else:
             return False
 
-        if is_vertical:
-            pass
-        elif not is_vertical:
-
-            # oy wise check next 3 lines: from 1 before ship oy to 1 after
-
-            # avoid IndexOutOfRange ex. for ship touching upper edge
-            row_start = row
-            if row > 0:
-                row_start -= - 1
-            
-            # avoid IndexOutOfRange ex. for ship touching down edge
-            row_end = row + 1 # where row_end is end of range generator rather than index
-            if row < 9:
-                row_end += 1
-            
-            # avoid IndexOutOfRange ex. for ship touching left edge
-            colum_start = column
-            if column > 0:
-                column -= 1
-
-            # avoid IndexOutOfRange ex. for ship touching right edge
-            column_end = row + 1 # where row_end is end of range generator rather than index
-            if row < 9:
-                column_end += 1
-
-
-            for y in range(column_start, column_end):
-                for x in range(row_start, row_end):
-                    if ocean.board[y][x].is_ship:
-                        return False
+    @staticmethod
+    def range_of_width(index):
+        '''
+        Given a number representing index in ocean.board:
+            row    : for horizontal ships
+            column : for vertical
         
-        return True
-            
+        finds 3 wide range between index-1 and index+1, with exepction
+            of indexes out of oceans.board if on edges
+        
+        Parameters:
+            index : int
+        
+        Returns:
+            range generator range(start, end)
+        '''
 
-    def check_free_position(self):
-        for i in range(self.size):
-            if self.is_vertical:
-                if not ocean.board[start_row + i][start_column].is_ship():
-                    pass
+        start = index
+        # avoid IndexOutOfRange ex. for ships touching first edge
+        if index > 0: 
+            start -= 1
+        
+        end = index + 1 # + 1 becaouse its rather range argument than index
+        # avoid IndexOutOfRange ex. for ships touching last edge
+        if index < 9:
+            end += 1
+        
+        return range(start, end)
+        
 
-            else:
-                if not ocean.board[start_row][start_column + i].is_ship():
-                    pass
+        
 
+    @staticmethod
+    def range_of_lenght(index, size):
+        '''
+        Given a number representing index in ocean.board:
+            row    : for vertical ships
+            column : for horizontal ships
+        
+        finds size+2 wide range between index and index+size-1, with exepction
+            of indexes out of oceans.board if on edges
+        
+        Parameters:
+            index : int
+        
+        Returns:
+            range generator range(start, end)
+        '''
+        # avoid IndexOutOfRange ex. for ship touching last edge
+        start = index
+        if index > 0:
+            start -= 1
+
+        # find last index of ship (column + size - 1) and + 1 becaouse its rather range argument than index
+        end = index + size
+        # avoid IndexOutOfRange ex. for ship touching last edge
+        if end < 10:
+            end += 1
+        
+        return range(start, end)
