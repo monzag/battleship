@@ -10,7 +10,7 @@ class Square:
 
         sqr_str = '~'
 
-        if self.is_ship and self.is_hit:
+        if self.is_ship:
             sqr_str = 'X'
         elif not self.is_ship and self.is_hit:
             sqr_str = 'O'
@@ -19,7 +19,7 @@ class Square:
 
 
     def set_as_ship(self):
-        if self.is_ship:
+        if not self.is_ship:
             self.is_ship = True
     
     def hit(self):
