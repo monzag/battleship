@@ -1,6 +1,6 @@
 class Square:
 
-    def __init__(self, row, column, is_hit=False, is_ship=False)
+    def __init__(self, row, column, is_hit=False, is_ship=False):
         self.row = row
         self.column = column
         self.is_hit = is_hit
@@ -8,9 +8,9 @@ class Square:
 
     def __str__(self):
 
-        sqr_str = ' '
+        sqr_str = '~'
 
-        if self.is_ship and self.is_hit:
+        if self.is_ship:
             sqr_str = 'X'
         elif not self.is_ship and self.is_hit:
             sqr_str = 'O'
@@ -19,7 +19,7 @@ class Square:
 
 
     def set_as_ship(self):
-        if self.is_ship:
+        if not self.is_ship:
             self.is_ship = True
     
     def hit(self):
