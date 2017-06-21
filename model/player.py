@@ -19,13 +19,13 @@ class Player:
         letter = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
 
         column = int(pos_x) - 1
-        row = int(''.join([value for key, value in letter.items() if key == pos_y]))
+        row = ''.join([value for key, value in letter.items() if key == pos_y])
 
         if isinstance(column, int) or isinstance(index_row, int):
             raise TypeError('Incorrect type!')
 
         else:
-            # insert ship to row and column?
+            ship = Ship(row, column, size)
             pass
 
     def is_game_win(self):
