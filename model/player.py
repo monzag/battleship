@@ -50,6 +50,10 @@ class Player:
 
         return True
 
+    def get_ships_from_player(self):
+        for size in range(1, 6):
+            self.get_positions_from_player(size)
+
 
 
 
