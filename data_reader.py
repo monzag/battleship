@@ -3,7 +3,7 @@ import re
 class DataReader:
 
     _ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-    
+
     def input_position(self):
         '''
         Repeat asking user for position in Ocean object (ex. A3) 
@@ -24,7 +24,7 @@ class DataReader:
             column = int(match.group('column'))
 
         return row, column
-    
+
     def input_orientation(self):
         '''
         Repeats asking user for orientation (vertical-horizontal)
@@ -46,11 +46,20 @@ class DataReader:
                 return False
         
         return True
-    
+
     def input_player_name(self, player_number):
-        if player_number == 1:
-            player_number = 'first'
-        else:
+        '''
+        Asks user for name (should be between 4-12 char long)
+        and capitalize it
+
+        Returns
+            name : string
+        '''
+        if player_number not in [1, 2]:
+            raise ValueError
+        
+        player_number = 'first'
+        if player_number == 2:
             player_number = 'second'
     
         name = input('\nWhat is the name of {} player: '.format(player_number))
@@ -58,8 +67,3 @@ class DataReader:
             name = input('\nName should be between 4-12 characters long: ')
         
         return name.capitalize()
-
-
-data_reader = DataReader()
-name = data_reader.input_player_name(1)
-print(name)
