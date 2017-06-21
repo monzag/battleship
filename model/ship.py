@@ -1,5 +1,5 @@
-from model.square import Square
-from model.ocean import Ocean
+from square import Square
+from ocean import Ocean
 
 
 class Ship:
@@ -119,7 +119,7 @@ class Ship:
             index : int
         
         Returns:
-            range generator range(start, end)
+            range generator : range(start, end)
         '''
 
         start = index

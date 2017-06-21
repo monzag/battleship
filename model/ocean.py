@@ -1,4 +1,4 @@
-from model.square import Square
+from square import Square
 
 
 class Ocean:
@@ -18,7 +18,7 @@ class Ocean:
         for i, row in enumerate(self.board):
             line = ' '.join(squere.get_squere_string(is_player_own) for squere in row)
             board_str += '\n{} {}'.format(self._ROWS[i], line)
-        
+
         return board_str
 
     def __str__(self):
