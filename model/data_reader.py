@@ -3,7 +3,7 @@ import re
 class DataReader:
 
     _ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-
+    
     def input_position(self):
         '''
         Repeat asking user for position in Ocean object (ex. A3) 
@@ -24,7 +24,7 @@ class DataReader:
             column = int(match.group('column'))
 
         return row, column
-
+    
     def input_orientation(self):
         '''
         Repeats asking user for orientation (vertical-horizontal)
@@ -46,7 +46,7 @@ class DataReader:
                 return False
         
         return True
-
+    
     def input_player_name(self, player_number):
         '''
         Asks user for name (should be between 4-12 char long)
