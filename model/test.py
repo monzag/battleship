@@ -1,6 +1,6 @@
-from ocean import Ocean
-from square import Square
-from ship import Ship
+from model.ocean import Ocean
+from model.square import Square
+from model.ship import Ship
 
 
 def test():
