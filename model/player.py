@@ -3,9 +3,14 @@ from ocean import Ocean
 
 class Player:
 
-    def __init__(self, name):
+    def __init__(self, name, ocean):
+        self.ships = []
         self.name = name
+        self.ocean = ocean
         self.is_fisrt = True
+
+    def set_ships(self):
+        pass
 
     def get_positions_from_player(self):
         pos_x = input('Write position x (1-10): ')
@@ -22,4 +27,16 @@ class Player:
         else:
             # insert ship to row and column?
             pass
+
+    def is_game_win(self):
+        for ship in self.ships:
+            for square in ship:
+                if not square.is_hit:
+                    return False
+
+        return True
+
+
+
+
 
