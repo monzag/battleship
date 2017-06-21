@@ -15,11 +15,15 @@ class Player:
         if ship.can_be_set(self.ocean, row, column):
             ship.insert_ship_to_ocean(self.ocean, row, column)
             self.ships.append(ship)
+            return False
+        else:
+            print('Baaaaad')
+            return True
 
     def is_input_valid(self, pos_x, pos_y, letter, is_vertical):
         if pos_x.isdigit() and pos_y in list(letter) and is_vertical in ['Y', 'N']:
 
-            if 0 < int(pos_x) < 10:
+            if 0 <= int(pos_x) < 10:
                 return True
 
         return False
@@ -40,10 +44,11 @@ class Player:
         else:
             is_vertical = False
 
-        column = int(pos_x) - 1
+        column = int(pos_x)
         row = letter[pos_y]
 
-        self.set_ship(row, column, is_vertical, size)
+        temp = self.set_ship(row, column, is_vertical, size)
+        return temp
 
     def is_game_win(self):
         for ship in self.ships:
@@ -55,7 +60,12 @@ class Player:
 
     def get_ships_from_player(self):
         for size in range(1, 6):
-            self.get_positions_from_player(size)
+            print('Insert ship of size: ', size)
+            ship_correct = True
+            while ship_correct:
+                ship_correct = self.get_positions_from_player(size)
+
+            print(self.ocean.get_ocean_string(True))
 
 ocean = Ocean()
 player = Player('Arek', ocean)
