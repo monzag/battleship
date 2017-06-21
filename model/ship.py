@@ -24,10 +24,7 @@ class Ship:
                 ocean.board[start_row][start_column + i].set_as_ship()
                 self.squares.append(ocean.board[start_row][start_column + i])
 
-        return ocean
-
-    @staticmethod
-    def is_in_ocean(row, column, size, is_vertical):
+    def is_in_ocean(self, row, column):
         '''
         Checks if user passed attributes values for new Ship obj. fit
         in range of Oceans board.
@@ -49,17 +46,16 @@ class Ship:
             False : otherwise
         '''
         # indexes and size of first square are in range of oceans board
-        if (0 <= row <= 9) and (0 <= column <= 9) and (1 <= size <= 5):
+        if (0 <= row <= 9) and (0 <= column <= 9) and (1 <= self.size <= 5):
             # would last squere be still in range of oceans board
-            if is_vertical and row + size - 1 <= 9:
+            if self.is_vertical and row + self.size - 1 <= 9:
                 return True
-            elif not is_vertical and column + size - 1 <= 9:
+            elif not self.is_vertical and column + self.size - 1 <= 9:
                 return True
         
         return False
 
-    @staticmethod
-    def can_be_set(ocean, row, column, size, is_vertical):
+    def can_be_set(self, ocean, row, column):
         '''
         Checks passed location of newly defined Ship obj. under fallowing
         curriculumstances:
@@ -84,22 +80,22 @@ class Ship:
             False : otherwise
         '''
         # disalow wrong indexes to be passed further in function
-        if Ship.is_in_ocean(row, column, size, is_vertical):
+        if self.is_in_ocean(row, column):
             
-            if is_vertical:
+            if self.is_vertical:
 
                 # iterate through every single ocean.board.squere around new Ship
-                for y in Ship.range_of_lenght(row, size):
-                    for x in Ship.range_of_width(row):
+                for y in self.range_of_lenght(row, self.size):
+                    for x in self.range_of_width(row):
                         # return False if any squere is a part of existing ship
                         if ocean.board[y][x].is_ship:
                             return False
 
-            elif not is_vertical:
+            elif not self.is_vertical:
 
                 # iterate through every single ocean.board.squere around new Ship
-                for y in Ship.range_of_width(row):
-                    for x in Ship.range_of_lenght(column, size):
+                for y in self.range_of_width(row):
+                    for x in self.range_of_lenght(column, self.size):
                         # return False if any squere is a part of existing ship
                         if ocean.board[y][x].is_ship:
                             return False
