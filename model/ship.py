@@ -6,8 +6,6 @@ class Ship:
 
     def __init__(self, size, is_vertical=True):
 
-        # self.row = row
-        # self.column = column
         self.size = size
         self.squares = []
         self.is_sunk = False
@@ -17,7 +15,7 @@ class Ship:
         if not self.is_sunk:
             self.is_sunk = True
 
-    def insert_ship_to_ocean(self, ocean, start_row, start_column, size):
+    def insert_ship_to_ocean(self, ocean, start_row, start_column):
         for i in range(self.size):
             if self.is_vertical:
                 ocean.board[start_row + i][start_column].set_as_ship()
