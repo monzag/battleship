@@ -3,8 +3,9 @@ import re
 class DataReader:
 
     _ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-    
-    def input_position(self):
+
+    @classmethod
+    def input_position(cls):
         '''
         Repeat asking user for position in Ocean object (ex. A3) 
         until provided data is a valid position
@@ -20,12 +21,13 @@ class DataReader:
 
         match = re.match(pattern, user_input)
         if match:
-            row = self._ROWS.index(match.group('row').upper())
+            row = cls._ROWS.index(match.group('row').upper())
             column = int(match.group('column'))
 
         return row, column
-    
-    def input_orientation(self):
+
+    @classmethod
+    def input_orientation(cls):
         '''
         Repeats asking user for orientation (vertical-horizontal)
         until provided data is correct
@@ -47,7 +49,8 @@ class DataReader:
         
         return True
     
-    def input_player_name(self, player_number):
+    @classmethod
+    def input_player_name(cls, player_number):
         '''
         Asks user for name (should be between 4-12 char long)
         and capitalize it
@@ -67,3 +70,10 @@ class DataReader:
             name = input('\nName should be between 4-12 characters long: ')
         
         return name.capitalize()
+    
+    @classmethod
+    def input_new_ship_data(cls):
+        row, column = cls.input_position()
+        is_vertical = cls.input_orientation()
+
+        return row, column, is_vertical

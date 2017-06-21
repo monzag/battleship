@@ -24,16 +24,13 @@ class Player:
         Returns:
             None
         '''
-        data_reader = DataReader()
-        row, column = data_reader.input_position()
-        is_vertical = data_reader.input_orientation()
+
+        row, column, is_vertical  = DataReader.input_new_ship_data()
         ship = Ship(size, is_vertical)
 
         while not ship.can_be_set(self.ocean, row, column):
             print('\nThis ship could not be added! Try again.')
-
-            row, column = data_reader.input_position()
-            is_vertical = data_reader.input_orientation()
+            row, column, is_vertical  = DataReader.input_new_ship_data()
             ship = Ship(size, is_vertical)
 
         ship.insert_ship_to_ocean(self.ocean, row, column)
@@ -55,13 +52,14 @@ class Player:
             self.set_ship(size)
             print(self.ocean.get_ocean_string(True))
 
-
+'''
 ocean = Ocean()
 player = Player('Arek', ocean)
 print(ocean.get_ocean_string(True))
 
 player.get_ships_from_player()
 print(ocean.get_ocean_string(True))
+'''
 
 
 
