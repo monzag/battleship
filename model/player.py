@@ -1,4 +1,5 @@
 from ocean import Ocean
+from ship import Ship
 
 
 class Player:
@@ -9,24 +10,37 @@ class Player:
         self.ocean = ocean
         self.is_fisrt = True
 
-    def set_ships(self):
-        pass
+    def set_ship(self, row, column, is_vertical):
+        ship = Ship(size, is_vertical)
+        if ship.can_be_set(ocean, row, column):
+            ship.insert_ship_to_ocean(ocean, row, column)
+            self.ships.append(ship)
 
-    def get_positions_from_player(self):
-        pos_x = input('Write position x (1-10): ')
-        pos_y = input('Write position y (A-J): ')
+    def is_input_valid(self, pos_x, pos_y, letter, is_vertical):
+        if pos_x.isdigit() and pos_y in list(letter) and is_vertical.upper() in ['Y', 'N']:
 
+            if 0 < pos_x < 10:
+                return True
+
+        return False
+
+    def get_positions_from_player(self, size):
         letter = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
 
-        column = int(pos_x) - 1
-        row = ''.join([value for key, value in letter.items() if key == pos_y])
+        while not self.is_input_valid(pos_x, pos_y, letter):
+            pos_y = input('Write position y (A-J): ')
+            pos_x = input('Write position x (1-10): ')
+            is_vertical = input('Should your ship be vertical? (y/n): ')
 
-        if isinstance(column, int) or isinstance(index_row, int):
-            raise TypeError('Incorrect type!')
-
+        if is_vertical.upper() == 'Y':
+            is_vertical = True
         else:
-            ship = Ship(row, column, size)
-            pass
+            is_vertical = False
+
+        column = int(pos_x) - 1
+        row = letter[pos_y]
+
+        self.set_ship(row, column, is_vertical)
 
     def is_game_win(self):
         for ship in self.ships:
