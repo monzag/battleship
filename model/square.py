@@ -19,7 +19,6 @@ class Square:
             sqr_str = Colors.FAIL + '⛴️' + Colors.ENDC
         return sqr_str
 
-
     def set_as_ship(self):
         if not self.is_ship:
             self.is_ship = True
