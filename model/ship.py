@@ -16,6 +16,16 @@ class Ship:
             self.is_sunk = True
 
     def insert_ship_to_ocean(self, ocean, start_row, start_column):
+        '''
+        Function sets Squere obj. (in Ocean attr board) attr. is_ship to True
+
+        Parameters:
+            start_row    : int (y of first ship square)
+            start_column : int (x of first ship square)
+        
+        Return:
+            None
+        '''
         for i in range(self.size):
             if self.is_vertical:
                 ocean.board[start_row + i][start_column].set_as_ship()
