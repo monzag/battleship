@@ -86,7 +86,7 @@ class Ship:
 
                 # iterate through every single ocean.board.squere around new Ship
                 for y in self.range_of_lenght(row, self.size):
-                    for x in self.range_of_width(row):
+                    for x in self.range_of_width(column):
                         # return False if any squere is a part of existing ship
                         if ocean.board[y][x].is_ship:
                             return False
