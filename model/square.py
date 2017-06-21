@@ -1,4 +1,4 @@
-from model.colors import Colors
+from colors import Colors
 
 
 class Square:
