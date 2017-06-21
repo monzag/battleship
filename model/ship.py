@@ -1,24 +1,13 @@
-<<<<<<< HEAD
-class Ship:
-
-    def __init__(self, size, row, column, is_sunk=False, is_horizontal=False):
-        self.is_sunk = is_sunk
-        self.is_horizontal = is_horizontal
-        self.size = size
-        self.row = row
-        self.column = column
-
-=======
-from square import Square
-from ocean import Ocean
+from model.square import Square
+from model.ocean import Ocean
 
 
 class Ship:
 
-    def __init__(self, row, column, size, is_vertical=True):
+    def __init__(self, size, is_vertical=True):
 
-        self.row = row
-        self.column = column
+        # self.row = row
+        # self.column = column
         self.size = size
         self.squares = []
         self.is_sunk = False
@@ -32,8 +21,10 @@ class Ship:
         for i in range(self.size):
             if self.is_vertical:
                 ocean.board[start_row + i][start_column].set_as_ship()
+                self.squares.append(ocean.board[start_row + i][start_column])
             else:
                 ocean.board[start_row][start_column + i].set_as_ship()
+                self.squares.append(ocean.board[start_row][start_column + i])
 
         return ocean
 
@@ -149,9 +140,6 @@ class Ship:
         
         return range(start, end)
         
-
-        
-
     @staticmethod
     def range_of_lenght(index, size):
         '''
@@ -180,4 +168,3 @@ class Ship:
             end += 1
         
         return range(start, end)
->>>>>>> master
