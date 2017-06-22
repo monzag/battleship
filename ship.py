@@ -1,7 +1,3 @@
-from square import Square
-from ocean import Ocean
-
-
 class Ship:
 
     def __init__(self, size, is_vertical=True):
@@ -28,10 +24,10 @@ class Ship:
         '''
         for i in range(self.size):
             if self.is_vertical:
-                ocean.board[start_row + i][start_column].set_as_ship()
+                ocean.board[start_row + i][start_column].set_as_ship(self)
                 self.squares.append(ocean.board[start_row + i][start_column])
             else:
-                ocean.board[start_row][start_column + i].set_as_ship()
+                ocean.board[start_row][start_column + i].set_as_ship(self)
                 self.squares.append(ocean.board[start_row][start_column + i])
 
     def is_in_ocean(self, row, column):

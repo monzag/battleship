@@ -10,4 +10,5 @@ class Hunting:
         while (random_row, random_col) in shots:
             random_row = randint(0, 9)
             random_col = randint(0, 9)
+        print('hunt: ', random_row, random_col)
         return random_row, random_col

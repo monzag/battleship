@@ -25,7 +25,7 @@ class Player:
             None
         '''
 
-        row, column, is_vertical  = DataReader.input_new_ship_data()
+        row, column, is_vertical = DataReader.input_new_ship_data()
         ship = Ship(size, is_vertical)
 
         while not ship.can_be_set(self.ocean, row, column):
@@ -52,16 +52,13 @@ class Player:
             self.set_ship(size)
             print(self.ocean.get_ocean_string(True))
 
-'''
-ocean = Ocean()
-player = Player('Arek', ocean)
-print(ocean.get_ocean_string(True))
-
-player.get_ships_from_player()
-print(ocean.get_ocean_string(True))
-'''
-
-
-
-
-
+# def main():
+#     ocean = Ocean()
+#     player = Player('Arek', ocean)
+#     print(ocean.get_ocean_string(True))
+#
+#     player.get_ships_from_player()
+#     print(ocean.get_ocean_string(True))
+#
+# if __name__ == '__main__':
+#     main()
