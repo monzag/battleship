@@ -1,9 +1,10 @@
 import os
 from colors import Colors
 from ocean import Ocean
+from
 
 
-class OutputMenager:
+class OutputManager:
 
     _ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
@@ -20,7 +21,7 @@ class OutputMenager:
         Return
             None
         '''
-        if not (isinstance(own_ocean, Ocean) or isinstance(enemy_ocean, Ocean))
+        if not (isinstance(own_ocean, Ocean) or isinstance(enemy_ocean, Ocean)):
             raise TypeError
 
         own_ocean = own_ocean.get_ocean_string(True).split('\n')
@@ -53,5 +54,3 @@ class OutputMenager:
         battlefild = ocean.get_ocean_string(is_player_own)
         
         print(battlefild)
-
-        
