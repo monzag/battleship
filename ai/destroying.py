@@ -24,3 +24,13 @@ class Destroying:
             self.direction = (0, -self.direction[1])
             self.direction_to_check.remove(self.direction)
 
+    def prepare_hit(self):
+        ''' Return coordinates of next target field '''
+        position = (self.current_position[0] + self.direction[0], self.current_position[1] + self.direction[1])
+        if position[0] > 9 or position[0] < 0 or position[1] > 9 or position[1] < 0:
+            self.flip_direction()
+            position = (self.current_position[0] + self.direction[0], self.current_position[1] + self.direction[1])
+
+        self.current_position = position
+        return self.current_position[0], self.current_position[1]
+
