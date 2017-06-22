@@ -1,5 +1,6 @@
 import re
 
+
 class DataReader:
 
     _ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -50,7 +51,7 @@ class DataReader:
         return True
 
     @classmethod
-    def input_player_name(cls, player_number):
+    def input_player_name(cls):
         '''
         Asks user for name (should be between 4-12 char long)
         and capitalize it
@@ -58,8 +59,8 @@ class DataReader:
         Returns
             name : string
         '''
-
-        name = input('\nWhat is the name of {} player: '.format(player_number))
+        name = input('What is your name?: ')
+        '''name = input('\nWhat is the name of {} player: '.format(player_number))'''
         while not (3 < len(name) < 13):
             name = input('\nName should be between 4-12 characters long: ')
 
@@ -73,7 +74,7 @@ class DataReader:
         return row, column, is_vertical
 
     @classmethod
-    def input_player_choice(cls, options):
+    def input_player_choice(cls):
         '''
         Display options and get input from user. 
         Check proper value (number 1-3))
@@ -85,17 +86,15 @@ class DataReader:
             int
         '''
 
-        pattern = r'(?P<options>([1-3])'
+        pattern = r'(?P<user_choice>([1-3])'
         user_option = input('Choose game mode (1-3): ')
 
         while not re.match(pattern, user_option):
             user_option = input('\nInvalid answer, try again(yes/no): ')
 
-        return int(user_option)
+        match = re.match(pattern, user_option)
 
+        if match:
+            user_choice = int(match.group('user_choice'))
 
-
-
-
-
-
+        return user_choice
