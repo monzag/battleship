@@ -3,7 +3,7 @@ from data_reader import DataReader
 import random
 from player import Player
 from ocean import Ocean
-# from output_manager import OutputManager
+from output_manager import OutputManager
 
 
 class GameController:
@@ -95,15 +95,16 @@ class GameController:
             return player_1, player_2
 
     def player_turn(self, player_1, player_2):
-        # OutputManager.print_battlefield(player_1.ocean, player_2.ocean)
-
         present_player = player_1
         next_player = player_2
+
         while True:
             print('Your turn, ' + present_player.name)
+            OutputManager.print_battlefield(present_player.ocean, next_player.ocean)
 
             hit_row, hit_column = DataReader.input_position()
             present_player.check_user_hit(hit_row, hit_column)
+
             present_player, next_player = next_player, present_player
 
     def run_up(self):
