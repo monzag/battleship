@@ -14,6 +14,14 @@ class Ship:
     def check_sunk(self):
         if not self.is_sunk:
             self.is_sunk = True
+    
+    @property
+    def is_ship_sunk(self):
+        for square in self.squares:
+            if not square.is_hit:
+                return False
+
+        return True
 
     def insert_ship_to_ocean(self, ocean, start_row, start_column):
         '''
@@ -46,7 +54,7 @@ class Ship:
             size is a number from 1 to 5 (including)
 
         Parameters:
-            row         : int (y index for board)
+            row         : int (y index for bshipoard)
             column      : int (x index for board)
             size        : int
             is_vertical : bool

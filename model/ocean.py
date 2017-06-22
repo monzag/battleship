@@ -1,6 +1,5 @@
 from square import Square
 from colors import Colors
-from output_menager import OutputManager
 
 
 class Ocean:

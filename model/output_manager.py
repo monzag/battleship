@@ -1,7 +1,6 @@
 import os
 from colors import Colors
 from ocean import Ocean
-from
 
 
 class OutputManager:
@@ -21,14 +20,8 @@ class OutputManager:
         Return
             None
         '''
-        if not (isinstance(own_ocean, Ocean) or isinstance(enemy_ocean, Ocean)):
-            raise TypeError
-
         own_ocean = own_ocean.get_ocean_string(True).split('\n')
         enemy_ocean = enemy_ocean.get_ocean_string(False).split('\n')
-
-        if len(own_ocean) != len(enemy_ocean):
-            raise ValueError
 
         battlefield = ['{}    {}'.format(own_ocean[i], enemy_ocean[i]) for i in range(len(own_ocean))]
         battlefield = '\n'.join(battlefield)
@@ -47,10 +40,7 @@ class OutputManager:
         Return:
             None
         '''
-        if not (isinstance(ocean, Ocean) or (isinstance(is_player_own, bool))):
-            raise TypeError
-
         os.system('clear')
-        battlefild = ocean.get_ocean_string(is_player_own)
+        battlefild = ocean.get_ocean_string(True)
         
         print(battlefild)
