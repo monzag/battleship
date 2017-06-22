@@ -10,7 +10,7 @@ class Ship:
         self.squares = []
         self.is_sunk = False
         self.is_vertical = is_vertical
-    
+
     @property
     def is_ship_sunk(self):
         for square in self.squares:
@@ -38,15 +38,6 @@ class Ship:
                 ocean.board[start_row][start_column + i].set_as_ship()
                 self.squares.append(ocean.board[start_row][start_column + i])
 
-    def sunk(self):
-        for square in self.squares:
-            if not square.is_hit:
-                self.is_sunk = False
-                return False
-            else:
-                self.is_sunk = True
-                # print zatopionego statku
-
     def is_in_ocean(self, row, column):
         '''
         Checks if user passed attributes values for new Ship obj. fit
@@ -54,7 +45,7 @@ class Ship:
 
         board is 10 element long squere 2d list:
             row, column are indexes from 0 to 9 (including)
-        
+
         size is amount of squares in Ship object:
             size is a number from 1 to 5 (including)
 
@@ -63,7 +54,7 @@ class Ship:
             column      : int (x index for board)
             size        : int
             is_vertical : bool
-        
+
         Returns:
             True  : if new Ship obj. would fit in Ocean (index wise)
             False : otherwise
@@ -75,7 +66,7 @@ class Ship:
                 return True
             elif not self.is_vertical and column + self.size - 1 <= 9:
                 return True
-        
+
         return False
 
     def can_be_set(self, ocean, row, column):
@@ -90,21 +81,21 @@ class Ship:
 
             - ship is declared by first square index in ocean.board[y][z]
             - ship is build from left->right(horizontal) or from up->down(vertical)
-        
+
         Parameters:
             ocean       : Ocean obj. where ship should fit
             row         : int (oy index for first new ship square)
             column      : int (ox index for first new ship square)
             size        : int (amount of squares in new ship)
             is_vertical : bool(if True new Ship obj. is set verticaly)
-        
+
         Returns:
             True  : if new ship can be set in given location
             False : otherwise
         '''
         # disalow wrong indexes to be passed further in function
         if self.is_in_ocean(row, column):
-            
+
             if self.is_vertical:
 
                 # iterate through every single ocean.board.squere around new Ship
@@ -122,7 +113,7 @@ class Ship:
                         # return False if any squere is a part of existing ship
                         if ocean.board[y][x].is_ship:
                             return False
-            
+
             return True
 
         else:
@@ -134,42 +125,42 @@ class Ship:
         Given a number representing index in ocean.board:
             row    : for horizontal ships
             column : for vertical
-        
+
         finds 3 wide range between index-1 and index+1, with exepction
             of indexes out of oceans.board if on edges
-        
+
         Parameters:
             index : int
-        
+
         Returns:
             range generator : range(start, end)
         '''
 
         start = index
         # avoid IndexOutOfRange ex. for ships touching first edge
-        if index > 0: 
+        if index > 0:
             start -= 1
-        
-        end = index + 1 # + 1 becaouse its rather range argument than index
+
+        end = index + 1     # + 1 becaouse its rather range argument than index
         # avoid IndexOutOfRange ex. for ships touching last edge
         if index < 9:
             end += 1
-        
+
         return range(start, end)
-        
+
     @staticmethod
     def range_of_lenght(index, size):
         '''
         Given a number representing index in ocean.board:
             row    : for vertical ships
             column : for horizontal ships
-        
+
         finds size+2 wide range between index and index+size-1, with exepction
             of indexes out of oceans.board if on edges
-        
+
         Parameters:
             index : int
-        
+
         Returns:
             range generator range(start, end)
         '''
@@ -183,5 +174,5 @@ class Ship:
         # avoid IndexOutOfRange ex. for ship touching last edge
         if end < 10:
             end += 1
-        
+
         return range(start, end)

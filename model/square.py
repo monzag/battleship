@@ -12,11 +12,11 @@ class Square:
     def set_as_ship(self):
         if not self.is_ship:
             self.is_ship = True
-    
+
     def hit(self):
         if not self.is_hit:
             self.is_hit = True
-        
+
     def get_squere_string(self, is_player_own):
 
         sqr_str = Colors.OKBLUE + '️🌊' + Colors.ENDC

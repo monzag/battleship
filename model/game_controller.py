@@ -4,6 +4,7 @@ import random
 from player import Player
 from ocean import Ocean
 from output_manager import OutputManager
+from ship import Ship
 
 
 class GameController:
@@ -26,8 +27,7 @@ class GameController:
         3) simulation
         '''
         print(option)
-        '''mode = DataReader.input_player_choice()'''
-        mode = 2
+        mode = DataReader.input_player_choice()
 
         level = '''
         Game level:
@@ -36,8 +36,7 @@ class GameController:
         3) hard
         '''
         print(level)
-        '''level = DataReader.input_player_choice()'''
-        level = 1
+        level = DataReader.input_player_choice()
 
         return mode, level
 
@@ -51,8 +50,9 @@ class GameController:
         Returns:
             first_player, second_player - string
         '''
-
+        print('First player')
         user_1 = DataReader.input_player_name()
+        print('Second player')
         user_2 = DataReader.input_player_name()
 
         players = [user_1, user_2]
@@ -66,7 +66,7 @@ class GameController:
 
         return first_player, second_player
 
-    def set_mode(self, ocean, mode, first_player, second_player):
+    def set_mode(self, mode, first_player, second_player):
         '''
         Set proper mode: single players, multiplayers or simulation
 
@@ -83,29 +83,45 @@ class GameController:
         # to do: single players
 
         # multiplayers
-
         if mode == 2:
             player_1 = Player(first_player, Ocean())
-
+            print('{} set you ships'.format(player_1.name))
             player_1.get_ships_from_player()
 
             player_2 = Player(second_player, Ocean())
+            print('{} set you ships'.format(player_2.name))
             player_2.get_ships_from_player()
 
             return player_1, player_2
 
-    def player_turn(self, player_1, player_2):
+    def play_game(self, player_1, player_2):
         present_player = player_1
         next_player = player_2
 
-        while True:
-            print('Your turn, ' + present_player.name)
+        game = present_player.is_game_win
+        moves = 0
+        while not game:
+            moves += 1
             OutputManager.print_battlefield(present_player.ocean, next_player.ocean)
-
+            print('Your turn, ' + present_player.name)
             hit_row, hit_column = DataReader.input_position()
-            present_player.check_user_hit(hit_row, hit_column)
+            turn_result = next_player.check_user_hit(hit_row, hit_column)
 
+            OutputManager.print_battlefield(present_player.ocean, next_player.ocean)
+            input(turn_result)
             present_player, next_player = next_player, present_player
+
+            game = present_player.is_game_win
+
+        points = 1000 - int(moves/2)
+
+        return next_player.name, points
+
+    def end_game(self, winner, points):
+
+        print('The winner is: {}, with {} points'.format(winner, points))
+        with open('highscores.csv', 'a') as highscore:
+            highscore.write('{}|{}\n'.format(points, winner))
 
     def run_up(self):
         mode, level = self.choose_option()
@@ -113,12 +129,10 @@ class GameController:
         print('first: ', first_player)
         print('second: ', second_player)
         ocean = Ocean()
-        player_1, player_2 = self.set_mode(ocean, mode, first_player, second_player)
-        self.player_turn(player_1, player_2)
+        player_1, player_2 = self.set_mode(mode, first_player, second_player)
+        winner, points = self.play_game(player_1, player_2)
+        self.end_game(winner, points)
 
-
-game = GameController()
-game.run_up()
 
 
 

@@ -2,6 +2,7 @@ from ocean import Ocean
 from ship import Ship
 from data_reader import DataReader
 from square import Square
+from output_manager import OutputManager
 
 
 class Player:
@@ -10,7 +11,7 @@ class Player:
         self.ships = []
         self.name = name
         self.ocean = ocean
-        self.is_fisrt = True
+        self.is_first = True
 
     def set_ship(self, size):
         '''
@@ -47,8 +48,9 @@ class Player:
         '''
 
         for ship in self.ships:
-            ship.sunk()
-
+            for square in ship.squares:
+                if not square.is_hit:
+                    return False
         return True
 
     def get_ships_from_player(self):
@@ -58,13 +60,14 @@ class Player:
         Return:
             None
         '''
-
+        OutputManager.print_single_battlefield(self.ocean, True)
         for size in [2, 3, 3, 4, 5]:
-            print('Insert ship of size: ', size)
+            print('{} Insert ship of size: {}'.format(self.name, size))
 
             self.set_ship(size)
-            print(self.ocean.get_ocean_string(True))
-            
+            OutputManager.print_single_battlefield(self.ocean, True)
+        input('Press any key to continue')
+
     def check_user_hit(self, hit_row, hit_column):
         '''
         Check square on hit positions by user.
@@ -74,24 +77,33 @@ class Player:
             hit_column - int
 
         Returns:
-            None
+            turn_result : str
         '''
-        hit_square = Square(hit_row, hit_column)
-        if not self.check_free_field(hit_square):
-            self.check_hit_square(hit_square)
-            if self.is_game_win:
-                # Wygrana, highscore, game again?
-                pass
+        if not self.ocean.board[hit_row][hit_column].is_hit:
+            self.ocean.board[hit_row][hit_column].hit()
+            if self.ocean.board[hit_row][hit_column].is_ship:
+                ship = self.find_ship_by_square(self.ocean.board[hit_row][hit_column])
+                if ship.is_ship_sunk:
+                    turn_result = '>>> Hit and sunk!! <<<'
+                else:
+                    turn_result = '>>> Hit!! <<<'
+            else:
+                turn_result = '>>> Miss! <<<'
 
-    def check_free_field(self, hit_square):
-        if hit_square.is_hit:
-            return False
-        else:
-            return True
+        return turn_result
 
-    def check_hit_square(self, hit_square):
-        if hit_square.is_ship:
-            hit_square.hit()
+    def find_ship_by_square(self, square):
+        '''
+        Given square obj that is a part of ship returns Ship obj,
+        that is owner of given square
 
-            # jeśli tak to zatop, wydrukuj odpowiedni statek
+        Parameters:
+            square : square obj
 
+        Returns:
+            Ship obj
+        '''
+        for ship in self.ships:
+            for sqr_obj in ship.squares:
+                if sqr_obj == square:
+                    return ship
