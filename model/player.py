@@ -2,7 +2,6 @@ from ocean import Ocean
 from ship import Ship
 from data_reader import DataReader
 from square import Square
-from output_manager import OutputManager
 
 
 class Player:
@@ -47,21 +46,8 @@ class Player:
             bool
         '''
 
-        '''for ship in self.ships:
-
-        Checks if any squere obj in ship.ships list is not hit 
-        if there is at last one which wasn't hit means the game is still on
-
-        Returns:
-            bool : game end control
-        '''
         for ship in self.ships:
-            for square in ship:
-                if not square.is_hit:
-                    return False
-
-        for ship in self.ships:
-            Ship.sunk()
+            ship.sunk()
 
         return True
 
@@ -77,27 +63,25 @@ class Player:
             print('Insert ship of size: ', size)
 
             self.set_ship(size)
-            OutputManager.print_single_battlefield(self.ocean)
-
-    def find_ship_by_square(self, square):
+            print(self.ocean.get_ocean_string(True))
+            
+    def check_user_hit(self, hit_row, hit_column):
         '''
-        Given square obj that is a part of ship returns Ship obj,
-        that is owner of given square
+        Check square on hit positions by user.
 
-        Parameters:
-            square : square obj
-        
+        Args:
+            hit_row - int
+            hit_column - int
+
         Returns:
-            Ship obj
+            None
         '''
-        for ship in player.ships:
-            for sqr_obj in ship.squares:
-                if sqr_obj == square:
-                    return ship
-        raise ValueError
-    
-    def hit_ship_neighbour():
-	pass
+        hit_square = Square(hit_row, hit_column)
+        if not self.check_free_field(hit_square):
+            self.check_hit_square(hit_square)
+            if self.is_game_win:
+                # Wygrana, highscore, game again?
+                pass
 
     def check_free_field(self, hit_square):
         if hit_square.is_hit:
@@ -108,5 +92,6 @@ class Player:
     def check_hit_square(self, hit_square):
         if hit_square.is_ship:
             hit_square.hit()
+
             # jeśli tak to zatop, wydrukuj odpowiedni statek
 
