@@ -5,6 +5,7 @@ from player import Player
 from ocean import Ocean
 from output_manager import OutputManager
 from ship import Ship
+from hunting import Hunting
 
 
 class GameController:
@@ -29,72 +30,137 @@ class GameController:
         print(option)
         mode = DataReader.input_player_choice()
 
-        level = '''
-        Game level:
-        1) easy
-        2) medium
-        3) hard
-        '''
-        print(level)
-        level = DataReader.input_player_choice()
+        if mode == 1 or mode == 3:
+            level = '''
+            Game level:
+            1) easy
+            2) medium
+            3) hard
+            '''
+            print(level)
+            level = DataReader.input_player_choice()
 
+            return mode, level
+
+        level = None
         return mode, level
 
-    def choose_first_player(self, mode):
+    def choose_first_player(self, player_1, player_2):
         '''
-        Get user name and random choose first player
+        Random choose first player.
 
         Args:
-            mode : int
+            player_1, player_2 : Player object
 
         Returns:
             first_player, second_player : string
         '''
 
-        print('First player')
-        user_1 = DataReader.input_player_name()
-        print('Second player')
-        user_2 = DataReader.input_player_name()
+        players = [player_1.name, player_2.name]
+        randomly = random.choice(players)
 
-        players = [user_1, user_2]
-        first_player = random.choice(players)
-
-        if first_player == user_1:
-            second_player = user_2
+        if randomly == player_1.name:
+            first_player = player_1
+            second_player = player_2
         else:
-            first_player = user_2
-            second_player = user_1
+            first_player = player_2
+            second_player = player_1
 
         return first_player, second_player
 
-    def set_mode(self, mode, first_player, second_player):
+    def set_mode(self, mode):
         '''
         Set proper mode: single players, multiplayers or simulation
 
         Args:
             mode : int
-            first_player : string
-            second_player : string
 
         Returns:
             None
         '''
 
         # to do: single players
+        if mode == 1:
+            player_1, player_2 = self.set_single_players()
 
         # multiplayers
         if mode == 2:
-            player_1 = Player(first_player, Ocean())
-            print('{} set you ships'.format(player_1.name))
-            player_1.get_ships_from_player()
+            player_1, player_2 = self.set_multiplayers()
 
-            player_2 = Player(second_player, Ocean())
-            print('{} set you ships'.format(player_2.name))
-            player_2.get_ships_from_player()
+        # simulation
+        if mode == 3:
+            player_1, player_2 = self.set_simulation()
 
-            return player_1, player_2
+        return player_1, player_2
 
-    def play_game(self, player_1, player_2):
+    def set_single_players(self):
+        '''
+        Game player - computer. Set ships, 
+
+        Returns:
+            player_1, player_2 - Player object
+        '''
+        player_type = 'human'
+        print('Setting First player')
+        user_1 = DataReader.input_player_name()
+        player_1 = Player(user_1, Ocean())
+        print('{} set you ships'.format(player_1.name))
+        player_1.get_ships_from_player(player_type)
+
+        player_type = 'computer'
+        print('Setting computer player')
+        user_2 = 'computer'
+        player_2 = Player(user_2, Ocean())
+        player_2.generate_ships_for_computer(player_type)
+
+        return player_1, player_2
+
+    def set_multiplayers(self):
+        '''
+        Game player - player.
+
+        Returns:
+            player_1, player_2 - Player object
+        '''
+
+        player_type = 'human'
+        print('Setting First player')
+        user_1 = DataReader.input_player_name()
+        player_1 = Player(user_1, Ocean())
+        print('{} set you ships'.format(player_1.name))
+        player_1.get_ships_from_player(player_type)
+
+        print('Setting second player')
+        user_2 = DataReader.input_player_name()
+        player_2 = Player(user2, Ocean())
+        print('{} set you ships'.format(player_2.name))
+        player_2.get_ships_from_player(player_type)
+
+        return player_1, player_2
+
+    def set_simulation(self):
+        '''
+        Game computer - computer
+
+        Returns:
+            player_1, player_2 - Player object
+        '''
+
+        player_type = 'computer'
+
+        print('Setting computer player')
+        user_1 = 'computer'
+        player_1 = Player(user_1, Ocean())
+        player_1.generate_ships_for_computer(player_type)
+
+        print('Setting second computer player')
+        user_2 = 'computer_2'
+        player_2 = Player(user_2, Ocean())
+        player_2.generate_ships_for_computer(player_type)
+
+        return player_1, player_2
+
+    def play_game(self, present_player, next_player):
         '''
         Set present player and next player.
         Set player turns: display 2 board (user and enemy), get hit position, check result.
@@ -109,18 +175,27 @@ class GameController:
             points: int
         '''
 
-        present_player = player_1
-        next_player = player_2
-
         game = present_player.is_game_win
         moves = 0
         while not game:
             moves += 1
             OutputManager.print_battlefield(present_player.ocean, next_player.ocean)
             print('Your turn, ' + present_player.name)
-            hit_row, hit_column = DataReader.input_position()
-            turn_result = next_player.check_user_hit(hit_row, hit_column)
 
+            if present_player.name == 'computer':
+                hunting = Hunting()
+                hit_row, hit_column = hunting.shoot_random()
+                input('enter')
+
+            elif present_player.name == 'computer_2':
+                hunting = Hunting()
+                hit_row, hit_column = hunting.shoot_random()
+                input('enter')
+
+            else:
+                hit_row, hit_column = DataReader.input_position()
+
+            turn_result = next_player.check_user_hit(hit_row, hit_column)
             OutputManager.print_battlefield(present_player.ocean, next_player.ocean)
             input(turn_result)
             present_player, next_player = next_player, present_player
@@ -156,12 +231,10 @@ class GameController:
         '''
 
         mode, level = self.choose_option()
-        first_player, second_player = self.choose_first_player(mode)
-        print('first: ', first_player)
-        print('second: ', second_player)
         ocean = Ocean()
-        player_1, player_2 = self.set_mode(mode, first_player, second_player)
-        winner, points = self.play_game(player_1, player_2)
+        player_1, player_2 = self.set_mode(mode)
+        present_player, next_player = self.choose_first_player(player_1, player_2)
+        winner, points = self.play_game(present_player, next_player)
         self.end_game(winner, points)
 
 
