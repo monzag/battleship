@@ -1,7 +1,7 @@
 from ocean import Ocean
 from ship import Ship
 from data_reader import DataReader
-from output_manager import OutputManager
+from square import Square
 
 
 class Player:
@@ -21,17 +21,17 @@ class Player:
 
         Parameters:
             size : int(1-5) lenght of ship
-        
+
         Returns:
             None
         '''
 
-        row, column, is_vertical  = DataReader.input_new_ship_data()
+        row, column, is_vertical = DataReader.input_new_ship_data()
         ship = Ship(size, is_vertical)
 
         while not ship.can_be_set(self.ocean, row, column):
             print('\nThis ship could not be added! Try again.')
-            row, column, is_vertical  = DataReader.input_new_ship_data()
+            row, column, is_vertical = DataReader.input_new_ship_data()
             ship = Ship(size, is_vertical)
 
         ship.insert_ship_to_ocean(self.ocean, row, column)
@@ -40,75 +40,58 @@ class Player:
     @property
     def is_game_win(self):
         '''
-        Checks if any squere obj in ship.ships list is not hit 
-        if there is at last one which wasn't hit means the game is still on
+        Check that all squares are hit. Returns True if yes.
 
         Returns:
-            bool : game end control
+            bool
         '''
+
         for ship in self.ships:
-            for square in ship:
-                if not square.is_hit:
-                    return False
+            ship.sunk()
 
         return True
 
     def get_ships_from_player(self):
-        '''    def is_game_win(self):
-        Holds mechanick under player creating his ships
+        '''
+        Sets 5 ships in proper size on position indicated by user.
+
+        Return:
+            None
+        '''
+
+        for size in [2, 3, 3, 4, 5]:
+            print('Insert ship of size: ', size)
+
+            self.set_ship(size)
+            print(self.ocean.get_ocean_string(True))
+            
+    def check_user_hit(self, hit_row, hit_column):
+        '''
+        Check square on hit positions by user.
+
+        Args:
+            hit_row - int
+            hit_column - int
 
         Returns:
             None
         '''
-        for size in range(1, 6):
-            print('Insert ship of size: ', size)
-            
-            self.set_ship(size)
-            OutputManager.print_single_battlefield(self.ocean)
+        hit_square = Square(hit_row, hit_column)
+        if not self.check_free_field(hit_square):
+            self.check_hit_square(hit_square)
+            if self.is_game_win:
+                # Wygrana, highscore, game again?
+                pass
 
-    def find_ship_by_square(self, square):
-        '''
-        Given square obj that is a part of ship returns Ship obj,
-        that is owner of given square
+    def check_free_field(self, hit_square):
+        if hit_square.is_hit:
+            return False
+        else:
+            return True
 
-        Parameters:
-            square : square obj
-        
-        Returns:
-            Ship obj
-        '''
-        for ship in player.ships:
-            for sqr_obj in ship.squares:
-                if sqr_obj == square:
-                    return ship
-        raise ValueError
-    
-    def hit_ship_neighbour():
+    def check_hit_square(self, hit_square):
+        if hit_square.is_ship:
+            hit_square.hit()
 
-        
-ocean = Ocean()
-player = Player('Kogo', ocean)
-ocean2 = Ocean()
-player2 = Player('Soto', ocean2)
-
-ship = Ship(1, True)
-ship2 = Ship(3, False)
-
-ship.insert_ship_to_ocean(player.ocean, 1, 1)
-player.ships.append(ship)
-ship2.insert_ship_to_ocean(player.ocean, 5, 5)
-player.ships.append(ship2)
-
-row = 1
-column = 1
-ocean.board[row][column].hit()
-
-OutputManager.print_battlefield(player.ocean, player2.ocean)
-if ocean.board[row][column].is_ship:
-    ship = player.find_ship_by_square(ocean.board[row][column])
-    if ship.is_ship_sunk:
-        player.hit_ship_neighbour()
-
-
-
+            # jeśli tak to zatop, wydrukuj odpowiedni statek
 
