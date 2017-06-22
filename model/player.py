@@ -2,6 +2,7 @@ from ocean import Ocean
 from ship import Ship
 from data_reader import DataReader
 from square import Square
+from output_manager import OutputManager
 
 
 class Player:
@@ -47,9 +48,18 @@ class Player:
         '''
 
         '''for ship in self.ships:
+
+        Checks if any squere obj in ship.ships list is not hit 
+        if there is at last one which wasn't hit means the game is still on
+
+        Returns:
+            bool : game end control
+        '''
+        for ship in self.ships:
             for square in ship:
                 if not square.is_hit:
-                    return False'''
+                    return False
+
         for ship in self.ships:
             Ship.sunk()
 
@@ -67,25 +77,27 @@ class Player:
             print('Insert ship of size: ', size)
 
             self.set_ship(size)
-            print(self.ocean.get_ocean_string(True))
+            OutputManager.print_single_battlefield(self.ocean)
 
-    def check_user_hit(self, hit_row, hit_column):
+    def find_ship_by_square(self, square):
         '''
-        Check square on hit positions by user.
+        Given square obj that is a part of ship returns Ship obj,
+        that is owner of given square
 
-        Args:
-            hit_row - int
-            hit_column - int
-
+        Parameters:
+            square : square obj
+        
         Returns:
-            None
+            Ship obj
         '''
-        hit_square = Square(hit_row, hit_column)
-        if not self.check_free_field(hit_square):
-            self.check_hit_square(hit_square)
-            if self.is_game_win:
-                # Wygrana, highscore, game again?
-                pass
+        for ship in player.ships:
+            for sqr_obj in ship.squares:
+                if sqr_obj == square:
+                    return ship
+        raise ValueError
+    
+    def hit_ship_neighbour():
+	pass
 
     def check_free_field(self, hit_square):
         if hit_square.is_hit:
