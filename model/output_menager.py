@@ -1,5 +1,6 @@
 import os
 from colors import Colors
+from ocean import Ocean
 
 
 class OutputMenager:
@@ -19,6 +20,9 @@ class OutputMenager:
         Return
             None
         '''
+        if not (isinstance(own_ocean, Ocean) or isinstance(enemy_ocean, Ocean))
+            raise TypeError
+
         own_ocean = own_ocean.get_ocean_string(True).split('\n')
         enemy_ocean = enemy_ocean.get_ocean_string(False).split('\n')
 
@@ -42,6 +46,9 @@ class OutputMenager:
         Return:
             None
         '''
+        if not (isinstance(ocean, Ocean) or (isinstance(is_player_own, bool))):
+            raise TypeError
+
         os.system('clear')
         battlefild = ocean.get_ocean_string(is_player_own)
         
