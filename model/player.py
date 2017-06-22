@@ -60,6 +60,7 @@ class Player:
         Return:
             None
         '''
+
         OutputManager.print_single_battlefield(self.ocean, True)
         for size in [2, 3, 3, 4, 5]:
             print('{} Insert ship of size: {}'.format(self.name, size))
@@ -73,12 +74,13 @@ class Player:
         Check square on hit positions by user.
 
         Args:
-            hit_row - int
-            hit_column - int
+            hit_row : int
+            hit_column : int
 
         Returns:
             turn_result : str
         '''
+
         if not self.ocean.board[hit_row][hit_column].is_hit:
             self.ocean.board[hit_row][hit_column].hit()
             if self.ocean.board[hit_row][hit_column].is_ship:

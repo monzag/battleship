@@ -16,7 +16,7 @@ class OutputManager:
         Parameters:
             own_battlefield   : ocean obj (current player that has turn)
             enemy_battlefiels : ocean obj (other player)
-        
+
         Return
             None
         '''
@@ -28,7 +28,7 @@ class OutputManager:
 
         os.system('clear')
         print(battlefield)
-    
+
     @classmethod
     def print_single_battlefield(cls, ocean, is_player_own):
         '''
@@ -36,11 +36,15 @@ class OutputManager:
 
         Parameters:
             ocean : Ocean obj
-        
+
         Return:
             None
         '''
         os.system('clear')
         battlefild = ocean.get_ocean_string(True)
-        
+
         print(battlefild)
+
+    @classmethod
+    def display_welcome_screen(self):
+        pass

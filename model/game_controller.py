@@ -8,16 +8,16 @@ from ship import Ship
 
 
 class GameController:
-
-    def __init__(self):
-        self.player = []
+    '''
+    Logic game.
+    '''
 
     def choose_option(self):
         '''
         Display options and choose game mode/level by user (number 1-3).
 
         Returns:
-            mode, level - int
+            mode, level : int
         '''
 
         option = '''
@@ -45,11 +45,12 @@ class GameController:
         Get user name and random choose first player
 
         Args:
-            mode - int
+            mode : int
 
         Returns:
-            first_player, second_player - string
+            first_player, second_player : string
         '''
+
         print('First player')
         user_1 = DataReader.input_player_name()
         print('Second player')
@@ -71,10 +72,9 @@ class GameController:
         Set proper mode: single players, multiplayers or simulation
 
         Args:
-            ocean
-            mode - int
-            first_player - string
-            second_player - string
+            mode : int
+            first_player : string
+            second_player : string
 
         Returns:
             None
@@ -95,6 +95,20 @@ class GameController:
             return player_1, player_2
 
     def play_game(self, player_1, player_2):
+        '''
+        Set present player and next player.
+        Set player turns: display 2 board (user and enemy), get hit position, check result.
+        If player not win, switch players.
+
+        Args:
+            player_1 - Player object
+            player_2 - Player object
+
+        Returns:
+            name player : name Player object
+            points: int
+        '''
+
         present_player = player_1
         next_player = player_2
 
@@ -118,12 +132,29 @@ class GameController:
         return next_player.name, points
 
     def end_game(self, winner, points):
+        '''
+        Display information about winner and write result to file. 
+
+        Args:
+            winner : string
+            points : int
+
+        Returns:
+            None
+        '''
 
         print('The winner is: {}, with {} points'.format(winner, points))
         with open('highscores.csv', 'a') as highscore:
             highscore.write('{}|{}\n'.format(points, winner))
 
     def run_up(self):
+        '''
+        Starting Game.
+
+        Returns:
+            None
+        '''
+
         mode, level = self.choose_option()
         first_player, second_player = self.choose_first_player(mode)
         print('first: ', first_player)
