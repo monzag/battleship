@@ -14,5 +14,13 @@ class Destroying:
         direction = self.direction_to_check.pop(randint(0, len(self.direction_to_check) - 1))
         return direction
 
-    def pursue_direction(self, hit_row, hit_col):
-        pass
+    def flip_direction(self):
+        ''' Flip current vector direction by 180 degree'''
+        self.current_position = self.initial_position
+        if self.direction[0] != 0:
+            self.direction = (-self.direction[0], 0)
+            self.direction_to_check.remove(self.direction)
+        else:
+            self.direction = (0, -self.direction[1])
+            self.direction_to_check.remove(self.direction)
+
