@@ -5,11 +5,11 @@ from ai import Destroying
 class AiController:
 
     def __init__(self):
+        self.flag_hit = False
+        self.flag_sunk = False
+        self.ship_count = 5
+        self.destroy_phase = False
         self.hunt = Hunting()
-        self.destroy = Destroying()
-        self.hit_flag = False
-        self.sunk_flag = False
-        self.ships_left = 5
 
     def ai_move(self):
         # hit_flag False and sunk_flag False
