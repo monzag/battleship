@@ -10,6 +10,12 @@ class Ocean:
         self.board = self.create_board()
 
     def create_board(self):
+        '''
+        Creates 2 dimentional table (2d list) consisting of Square elements
+
+        Returns
+            2d list of squares
+        '''
         return [[Square(row, column) for column in range(10)] for row in range(10)]
 
     def get_ocean_string(self, is_player_own):
