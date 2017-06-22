@@ -10,13 +10,16 @@ class AiController:
         self.ship_count = 5
         self.destroy_phase = False
         self.hunt = Hunting()
+        self.destroy = None
+        self.shots = []
 
     def ship_hunt(self):
-        if self.pewpew(*self.hunt.shoot_random()):
+        if self.pewpew(*self.hunt.shoot_random(self.shots)):
             self.destroy_phase = True
-            destroy = Destroying(*self.hunt.used[-1])
+            destroy = Destroying(*self.shots[-1])
 
     def pewpew(self, row, col):
+        self.shots.append((row, col))
         if (row == 3 and col == 6):
             return True
 
