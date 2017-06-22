@@ -11,9 +11,9 @@ class Ship:
         self.is_sunk = False
         self.is_vertical = is_vertical
 
-    def check_sunk(self):
+    '''def check_sunk(self):
         if not self.is_sunk:
-            self.is_sunk = True
+            self.is_sunk = True'''
 
     def insert_ship_to_ocean(self, ocean, start_row, start_column):
         '''
@@ -22,7 +22,7 @@ class Ship:
         Parameters:
             start_row    : int (y of first ship square)
             start_column : int (x of first ship square)
-        
+
         Return:
             None
         '''
@@ -33,6 +33,15 @@ class Ship:
             else:
                 ocean.board[start_row][start_column + i].set_as_ship()
                 self.squares.append(ocean.board[start_row][start_column + i])
+
+    def sunk(self):
+        for square in self.squares:
+            if not square.is_hit:
+                self.is_sunk = False
+                return False
+            else:
+                self.is_sunk = True
+                # print zatopionego statku
 
     def is_in_ocean(self, row, column):
         '''
