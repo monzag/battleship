@@ -59,8 +59,8 @@ class DataReader:
         Returns
             name : string
         '''
+
         name = input('What is your name?: ')
-        '''name = input('\nWhat is the name of {} player: '.format(player_number))'''
         while not (3 < len(name) < 13):
             name = input('\nName should be between 4-12 characters long: ')
 
@@ -86,15 +86,8 @@ class DataReader:
             int
         '''
 
-        pattern = r'(?P<user_choice>([1-3])'
-        user_option = input('Choose game mode (1-3): ')
+        user_option = None
+        while user_option not in ['1', '2', '3']:
+            user_option = input('Your choice (1-3): ')
 
-        while not re.match(pattern, user_option):
-            user_option = input('\nInvalid answer, try again(yes/no): ')
-
-        match = re.match(pattern, user_option)
-
-        if match:
-            user_choice = int(match.group('user_choice'))
-
-        return user_choice
+        return int(user_option)
