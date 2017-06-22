@@ -1,6 +1,7 @@
 from ocean import Ocean
 from ship import Ship
 from data_reader import DataReader
+from square import Square
 
 
 class Player:
@@ -38,33 +39,62 @@ class Player:
 
     @property
     def is_game_win(self):
-        for ship in self.ships:
+        '''
+        Check that all squares are hit. Returns True if yes.
+
+        Returns:
+            bool
+        '''
+
+        '''for ship in self.ships:
             for square in ship:
                 if not square.is_hit:
-                    return False
+                    return False'''
+        for ship in self.ships:
+            Ship.sunk()
 
         return True
 
     def get_ships_from_player(self):
+        '''
+        Sets 5 ships in proper size on position indicated by user.
+
+        Return:
+            None
+        '''
+
         for size in [2, 3, 3, 4, 5]:
             print('Insert ship of size: ', size)
 
             self.set_ship(size)
             print(self.ocean.get_ocean_string(True))
 
-    def check_user_hit(self, hit_pos):
-        pass
+    def check_user_hit(self, hit_row, hit_column):
+        '''
+        Check square on hit positions by user.
 
-'''
-ocean = Ocean()
-player = Player('Arek', ocean)
-print(ocean.get_ocean_string(True))
+        Args:
+            hit_row - int
+            hit_column - int
 
-player.get_ships_from_player()
-print(ocean.get_ocean_string(True))
-'''
+        Returns:
+            None
+        '''
+        hit_square = Square(hit_row, hit_column)
+        if not self.check_free_field(hit_square):
+            self.check_hit_square(hit_square)
+            if self.is_game_win:
+                # Wygrana, highscore, game again?
+                pass
 
+    def check_free_field(self, hit_square):
+        if hit_square.is_hit:
+            return False
+        else:
+            return True
 
-
-
+    def check_hit_square(self, hit_square):
+        if hit_square.is_ship:
+            hit_square.hit()
+            # jeśli tak to zatop, wydrukuj odpowiedni statek
 
