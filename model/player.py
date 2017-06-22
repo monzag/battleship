@@ -37,6 +37,13 @@ class Player:
         self.ships.append(ship)
 
     @property
+    '''
+    Checks if any squere obj in ship.ships list is not hit 
+    if there is at last one which wasn't hit means the game is still on
+
+    Returns:
+        bool : game end control
+    '''
     def is_game_win(self):
         for ship in self.ships:
             for square in ship:
@@ -46,22 +53,14 @@ class Player:
         return True
 
     def get_ships_from_player(self):
+    '''
+    Holds mechanick under player creating his ships
+
+    Returns:
+        None
+    '''
         for size in range(1, 6):
             print('Insert ship of size: ', size)
             
             self.set_ship(size)
             print(self.ocean.get_ocean_string(True))
-
-'''
-ocean = Ocean()
-player = Player('Arek', ocean)
-print(ocean.get_ocean_string(True))
-
-player.get_ships_from_player()
-print(ocean.get_ocean_string(True))
-'''
-
-
-
-
-
