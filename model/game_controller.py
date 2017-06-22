@@ -2,6 +2,8 @@
 from data_reader import DataReader
 import random
 from player import Player
+from ocean import Ocean
+# from output_manager import OutputManager
 
 
 class GameController:
@@ -24,7 +26,8 @@ class GameController:
         3) simulation
         '''
         print(option)
-        mode = DataReader.input_player_choice(option)
+        '''mode = DataReader.input_player_choice()'''
+        mode = 2
 
         level = '''
         Game level:
@@ -33,7 +36,8 @@ class GameController:
         3) hard
         '''
         print(level)
-        level = DataReader.input_player_choice(level)
+        '''level = DataReader.input_player_choice()'''
+        level = 1
 
         return mode, level
 
@@ -79,35 +83,41 @@ class GameController:
         # to do: single players
 
         # multiplayers
-        if mode == '2':
-            player_1 = Player(first_player, ocean)
-            print(ocean.get_ocean_string(True))
 
-            player_2 = Player(second_player, ocean)
-            print(ocean.get_ocean_string(True))
+        if mode == 2:
+            player_1 = Player(first_player, Ocean())
+
+            player_1.get_ships_from_player()
+
+            player_2 = Player(second_player, Ocean())
+            player_2.get_ships_from_player()
 
             return player_1, player_2
 
     def player_turn(self, player_1, player_2):
-        # to do: show 2 board
+        # OutputManager.print_battlefield(player_1.ocean, player_2.ocean)
 
         present_player = player_1
         next_player = player_2
         while True:
             print('Your turn, ' + present_player.name)
 
-            hit_pos = DataReader.input_position()
-            present_player.check_user_hit(hit_pos)
-
+            hit_row, hit_column = DataReader.input_position()
+            present_player.check_user_hit(hit_row, hit_column)
             present_player, next_player = next_player, present_player
-        pass
 
     def run_up(self):
-        mode, level = self.choose_option
-        first_player, second_player = self.choose_first_player
+        mode, level = self.choose_option()
+        first_player, second_player = self.choose_first_player(mode)
+        print('first: ', first_player)
+        print('second: ', second_player)
         ocean = Ocean()
         player_1, player_2 = self.set_mode(ocean, mode, first_player, second_player)
         self.player_turn(player_1, player_2)
+
+
+game = GameController()
+game.run_up()
 
 
 
