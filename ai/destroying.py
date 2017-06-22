@@ -9,9 +9,10 @@ class Destroying:
         self.direction = self._choose_direction()
         self.current_position = self.initial_position
 
-    def guess_pursue_direction(self, hit_row, hit_col):
-        guess = self.first_guess.pop(random(len(self.first_guess)))
-        return hit_row + guess[0], hit_col + guess[1]
+    def _choose_direction(self):
+        ''' Pop random direction from direction list '''
+        direction = self.direction_to_check.pop(randint(0, len(self.direction_to_check) - 1))
+        return direction
 
     def pursue_direction(self, hit_row, hit_col):
         pass
