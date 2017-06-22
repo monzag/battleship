@@ -37,6 +37,7 @@ class Player:
         self.ships.append(ship)
 
     @property
+    def is_game_win(self):
     '''
     Checks if any squere obj in ship.ships list is not hit 
     if there is at last one which wasn't hit means the game is still on
@@ -44,7 +45,6 @@ class Player:
     Returns:
         bool : game end control
     '''
-    def is_game_win(self):
         for ship in self.ships:
             for square in ship:
                 if not square.is_hit:
