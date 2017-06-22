@@ -41,14 +41,14 @@ class DataReader:
         user_input = input('\nShould ship be vertical(yes/no): ').upper()
         while not re.match(pattern, user_input):
             user_input = input('\nInvalid answer, try again(yes/no): ').upper()
-        
+
         match = re.match(pattern, user_input)
         if match:
             if 'Y' not in match.group('is_vertical'):
                 return False
-        
+
         return True
-    
+
     @classmethod
     def input_player_name(cls, player_number):
         '''
@@ -58,22 +58,44 @@ class DataReader:
         Returns
             name : string
         '''
-        if player_number not in [1, 2]:
-            raise ValueError
-        
-        player_number = 'first'
-        if player_number == 2:
-            player_number = 'second'
-    
+
         name = input('\nWhat is the name of {} player: '.format(player_number))
         while not (3 < len(name) < 13):
             name = input('\nName should be between 4-12 characters long: ')
-        
+
         return name.capitalize()
-    
+
     @classmethod
     def input_new_ship_data(cls):
         row, column = cls.input_position()
         is_vertical = cls.input_orientation()
 
         return row, column, is_vertical
+
+    @classmethod
+    def input_player_choice(cls, options):
+        '''
+        Display options and get input from user. 
+        Check proper value (number 1-3))
+
+        Args:
+            options - string
+
+        Returns:
+            int
+        '''
+
+        pattern = r'(?P<options>([1-3])'
+        user_option = input('Choose game mode (1-3): ')
+
+        while not re.match(pattern, user_option):
+            user_option = input('\nInvalid answer, try again(yes/no): ')
+
+        return int(user_option)
+
+
+
+
+
+
+
