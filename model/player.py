@@ -20,17 +20,17 @@ class Player:
 
         Parameters:
             size : int(1-5) lenght of ship
-        
+
         Returns:
             None
         '''
 
-        row, column, is_vertical  = DataReader.input_new_ship_data()
+        row, column, is_vertical = DataReader.input_new_ship_data()
         ship = Ship(size, is_vertical)
 
         while not ship.can_be_set(self.ocean, row, column):
             print('\nThis ship could not be added! Try again.')
-            row, column, is_vertical  = DataReader.input_new_ship_data()
+            row, column, is_vertical = DataReader.input_new_ship_data()
             ship = Ship(size, is_vertical)
 
         ship.insert_ship_to_ocean(self.ocean, row, column)
@@ -46,11 +46,14 @@ class Player:
         return True
 
     def get_ships_from_player(self):
-        for size in range(1, 6):
+        for size in [2, 3, 3, 4, 5]:
             print('Insert ship of size: ', size)
-            
+
             self.set_ship(size)
             print(self.ocean.get_ocean_string(True))
+
+    def check_user_hit(self, hit_pos):
+        pass
 
 '''
 ocean = Ocean()
