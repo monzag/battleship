@@ -3,6 +3,7 @@ from ship import Ship
 from data_reader import DataReader
 from square import Square
 from output_manager import OutputManager
+from hunting import Hunting
 
 
 class Player:
@@ -13,7 +14,7 @@ class Player:
         self.ocean = ocean
         self.is_first = True
 
-    def set_ship(self, size):
+    def set_ship(self, size, player_type):
         '''
         Uses DataReader module to get user defined data for new ship
         Checks if data and new Ship obj. are defined with game rules
@@ -27,13 +28,21 @@ class Player:
             None
         '''
 
-        row, column, is_vertical = DataReader.input_new_ship_data()
-        ship = Ship(size, is_vertical)
-
-        while not ship.can_be_set(self.ocean, row, column):
-            print('\nThis ship could not be added! Try again.')
+        if player_type == 'human':
             row, column, is_vertical = DataReader.input_new_ship_data()
             ship = Ship(size, is_vertical)
+
+            while not ship.can_be_set(self.ocean, row, column):
+                print('\nThis ship could not be added! Try again.')
+                row, column, is_vertical = DataReader.input_new_ship_data()
+                ship = Ship(size, is_vertical)
+
+        else:
+            row, column, is_vertical = self.get_random_ships()
+            ship = Ship(size, is_vertical)
+            while not ship.can_be_set(self.ocean, row, column):
+                row, column, is_vertical = self.get_random_ships()
+                ship = Ship(size, is_vertical)
 
         ship.insert_ship_to_ocean(self.ocean, row, column)
         self.ships.append(ship)
@@ -53,7 +62,7 @@ class Player:
                     return False
         return True
 
-    def get_ships_from_player(self):
+    def get_ships_from_player(self, player_type):
         '''
         Sets 5 ships in proper size on position indicated by user.
 
@@ -65,7 +74,7 @@ class Player:
         for size in [2, 3, 3, 4, 5]:
             print('{} Insert ship of size: {}'.format(self.name, size))
 
-            self.set_ship(size)
+            self.set_ship(size, player_type)
             OutputManager.print_single_battlefield(self.ocean, True)
         input('Press any key to continue')
 
@@ -92,6 +101,9 @@ class Player:
             else:
                 turn_result = '>>> Miss! <<<'
 
+        else:
+            turn_result = '>>> You repeat your moves!'
+
         return turn_result
 
     def find_ship_by_square(self, square):
@@ -109,3 +121,36 @@ class Player:
             for sqr_obj in ship.squares:
                 if sqr_obj == square:
                     return ship
+
+    def generate_ships_for_computer(self, player_type):
+        '''
+        Generate 5 ships for computer.
+
+        Args:
+            player_type : string
+
+        Returns:
+            None
+        '''
+
+        OutputManager.print_single_battlefield(self.ocean, True)
+        for size in [2, 3, 3, 4, 5]:
+            self.set_ship(size, player_type)
+
+    def get_random_ships(self):
+        '''
+        Generate random row, column and is_vertical for computer's ship.
+
+        Returns:
+            row : int
+            column : int
+            is_vertical : bool
+        '''
+
+        hunting = Hunting()
+        row, column = hunting.shoot_random()
+        is_vertical = hunting.vertical_random()
+
+        return row, column, is_vertical
+
+
