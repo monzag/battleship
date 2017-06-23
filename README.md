@@ -29,6 +29,11 @@ __Instance Attributes__
   - default: False
   - description: True if square is hit
 
+* 'is_ship'
+  - data: bool
+  - default: False
+  - description: True if square is ship
+
 __Instance Method__
 
 * #### '__init__(self, row, column)'
@@ -39,10 +44,15 @@ __Instance Method__
   
   Set object *is_hit* attribute to True
 
-* '__str__(self)'
+* 'set_as_ship(self)'
 
-  Returns a string as a 'x' when Square is hit. 
-  Otherwise returns position a string.
+  Set object *is_ship* attribute to True
+
+* 'get_square_string(self, is_player_own)'
+
+  Returns a proper string, depending on *is_ship* attribute and *is_ship* attribute. 
+  'x' when miss, otherwise proper ship.
+  
 
 
 ### 'ship.py'
@@ -58,25 +68,18 @@ __Instance Attributes__
   - default: False
   - description: True if ship is sunk
 
-* 'is_horizontal'
+* 'is_vertical'
   - data: bool
-  - description: True if is horizontal 
+  - description: True if is vertical
 
 * 'size'
-  - data: intiger (1 - 5)
+  - data: integer (1 - 5)
   - description: amount of Square objects in Ship 
 
 * 'squares'
   - data: list 
   - description: list of Square objects
 
-* 'row'
-  - data: intiger
-  - description: y position of first Square object
-
-* 'column'
-  - data: intiger
-  - description: x position of first Square object
 
 __Instance Method__
 
@@ -84,12 +87,18 @@ __Instance Method__
 
   Constructs an Ship object
 
-* 'set_ship(self)'
+* 'insert_ship_to_ocean(self, ocean, start_row, start_column)'
+
   Set ship on valid position, can't touch another ships
 
-* 'check_sunk(self)'
-  Check every Square object in *squares*. 
-  If every * is_hit* is True sets object's attribute *is_sunk* to True
+* 'is_ship_sunk(self)'
+
+  Returns False if any square object in ship is hit. Else return True.
+
+* 'is_in_ocean(self, row, column)'
+
+  Check proper row and column - range in board.
+
 
 ### 'ocean.py'
 
