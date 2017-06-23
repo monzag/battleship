@@ -5,6 +5,7 @@ from player import Player
 from ocean import Ocean
 from output_manager import OutputManager
 from ship import Ship
+from highscores import Highscores
 
 
 class GameController:
@@ -68,7 +69,11 @@ class GameController:
 
     def set_mode(self, mode, first_player, second_player):
         '''
-        Set proper mode: single players, multiplayers or simulation
+        Set proper mode: single players, multiplayers        with open('highscores.csv', 'a') as highscore_file:
+            highscore_file.write('{}|{}\n'.format(points, winner))
+
+        with open('highscores.csv', 'r') as highscore_file:
+            highscore = highscore_file.splilines or simulation
 
         Args:
             ocean
@@ -78,6 +83,11 @@ class GameController:
 
         Returns:
             None
+    def end_game(self, winner, points):
+
+        print('The winner is: {}, with {} points'.format(winner, points))
+        with open('highscores.csv', 'a') as highscore:
+            highscore.write('{}|{}\n'.format(points, winner))
         '''
 
         # to do: single players
@@ -92,6 +102,11 @@ class GameController:
             print('{} set you ships'.format(player_2.name))
             player_2.get_ships_from_player()
 
+    def end_game(self, winner, points):
+
+        print('The winner is: {}, with {} points'.format(winner, points))
+        with open('highscores.csv', 'a') as highscore:
+            highscore.write('{}|{}\n'.format(points, winner))
             return player_1, player_2
 
     def play_game(self, player_1, player_2):
@@ -117,12 +132,6 @@ class GameController:
 
         return next_player.name, points
 
-    def end_game(self, winner, points):
-
-        print('The winner is: {}, with {} points'.format(winner, points))
-        with open('highscores.csv', 'a') as highscore:
-            highscore.write('{}|{}\n'.format(points, winner))
-
     def run_up(self):
         mode, level = self.choose_option()
         first_player, second_player = self.choose_first_player(mode)
@@ -134,7 +143,11 @@ class GameController:
         self.end_game(winner, points)
 
 
+    def end_game(self, winner, points):
 
+        print('The winner is: {}, with {} points'.format(winner, points))
 
-
-
+        highscores = Highscores()
+        highscores.add_highscore([winner, str(points)])
+        print(highscores)
+        highscores.save_to_file()
