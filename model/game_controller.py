@@ -15,10 +15,10 @@ class GameController:
 
     def choose_option(self):
         '''
-        Display options and choose game mode/level by user (number 1-3).
+        Display options and choose game mode by user (number 1-3).
 
         Returns:
-            mode, level : int
+            mode : int
         '''
 
         option = '''
@@ -30,20 +30,7 @@ class GameController:
         print(option)
         mode = DataReader.input_player_choice()
 
-        if mode == 1 or mode == 3:
-            level = '''
-            Game level:
-            1) easy
-            2) medium
-            3) hard
-            '''
-            print(level)
-            level = DataReader.input_player_choice()
-
-            return mode, level
-
-        level = None
-        return mode, level
+        return mode
 
     def choose_first_player(self, player_1, player_2):
         '''
@@ -100,6 +87,7 @@ class GameController:
         Returns:
             player_1, player_2 - Player object
         '''
+        
         player_type = 'human'
         print('Setting First player')
         user_1 = DataReader.input_player_name()
@@ -230,7 +218,7 @@ class GameController:
             None
         '''
 
-        mode, level = self.choose_option()
+        mode = self.choose_option()
         ocean = Ocean()
         player_1, player_2 = self.set_mode(mode)
         present_player, next_player = self.choose_first_player(player_1, player_2)
