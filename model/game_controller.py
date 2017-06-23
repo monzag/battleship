@@ -5,6 +5,7 @@ from player import Player
 from ocean import Ocean
 from output_manager import OutputManager
 from ship import Ship
+from highscores import Highscores
 from hunting import Hunting
 
 
@@ -57,13 +58,22 @@ class GameController:
 
     def set_mode(self, mode):
         '''
-        Set proper mode: single players, multiplayers or simulation
+        Set proper mode: single players, multiplayers        with open('highscores.csv', 'a') as highscore_file:
+            highscore_file.write('{}|{}\n'.format(points, winner))
+
+        with open('highscores.csv', 'r') as highscore_file:
+            highscore = highscore_file.splilines or simulation
 
         Args:
             mode : int
 
         Returns:
             None
+    def end_game(self, winner, points):
+
+        print('The winner is: {}, with {} points'.format(winner, points))
+        with open('highscores.csv', 'a') as highscore:
+            highscore.write('{}|{}\n'.format(points, winner))
         '''
 
         # to do: single players
@@ -194,22 +204,6 @@ class GameController:
 
         return next_player.name, points
 
-    def end_game(self, winner, points):
-        '''
-        Display information about winner and write result to file. 
-
-        Args:
-            winner : string
-            points : int
-
-        Returns:
-            None
-        '''
-
-        print('The winner is: {}, with {} points'.format(winner, points))
-        with open('highscores.csv', 'a') as highscore:
-            highscore.write('{}|{}\n'.format(points, winner))
-
     def run_up(self):
         '''
         Starting Game.
@@ -226,7 +220,21 @@ class GameController:
         self.end_game(winner, points)
 
 
+    def end_game(self, winner, points):
+        '''
+        Display information about winner and write result to file. 
 
+        Args:
+            winner : string
+            points : int
 
+        Returns:
+            None
+        '''
 
+        print('The winner is: {}, with {} points'.format(winner, points))
 
+        highscores = Highscores()
+        highscores.add_highscore([winner, str(points)])
+        print(highscores)
+        highscores.save_to_file()
